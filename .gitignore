@@ -1,2 +1,6 @@
 /.idea/
+__pycache__/
 .DS_Store
+/playground.py
+/BotSettings.JSON
+/ChatGPTBot.log
