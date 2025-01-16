@@ -11,7 +11,7 @@ def get_dialog(user_id: int) -> list[Type[Dialog]]:
 
 def get_dialog_step(request_id: int) -> Type[Dialog]:
     with Session() as session:
-        step = session.query(Dialog).get(request_id)
+        step = session.get(Dialog, request_id)
         if step:
             return step
     raise KeyError(f"No dialog step with request ID: '{request_id}' id database")
@@ -19,7 +19,7 @@ def get_dialog_step(request_id: int) -> Type[Dialog]:
 
 def delete_dialog_step(request_id: int):
     with Session() as session:
-        step = session.query(Dialog).get(request_id)
+        step = session.get(Dialog, request_id)
         if step:
             session.delete(step)
             session.commit()

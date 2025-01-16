@@ -29,7 +29,7 @@ def write_or_rewrite_new_user_info(user_id: int, user_full_name: str, note: str 
     if days_period_for_using is not None and not (0 <= days_period_for_using <= 366):
         raise ValueError(f"Invalid days period: {days_period_for_using}")
     with Session() as session:
-        user: User = session.query(User).get(user_id)
+        user: User = session.get(User, user_id)
         if not user:
             session.add(User(
                 user_id=user_id, user_full_name=user_full_name,
@@ -43,12 +43,12 @@ def write_or_rewrite_new_user_info(user_id: int, user_full_name: str, note: str 
 
 def is_user_in_database(user_id: int) -> bool:
     with Session() as session:
-        return bool(session.query(User).get(user_id))
+        return bool(session.get(User, user_id))
 
 
 def get_available_days_to_use(user_id: int) -> int:
     with Session() as session:
-        user: User = session.query(User).get(user_id)
+        user: User = session.get(User, user_id)
         if not user:
             raise KeyError(f"No such user in database with ID: {user_id}")
         if not user.days_period_for_using:
