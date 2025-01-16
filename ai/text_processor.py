@@ -1,11 +1,9 @@
 from .__database import dialog as db_dialog
 from .__database import personal_settings as db_personal_settings
 from g4f.client import AsyncClient
-from .misc_helpers import LoadingMessage
-from aiogram import types
 
 
-def get_messages_for_model_from_db(requester_tg_peer_id: int) -> list[dict[str, str]]:
+def get_all_dialog(requester_tg_peer_id: int) -> list[dict[str, str]]:
     result = [{
         "role": "system",
         "content": db_personal_settings.get_personal_settings(requester_tg_peer_id).text_model_system_prompt
@@ -20,48 +18,45 @@ def get_messages_for_model_from_db(requester_tg_peer_id: int) -> list[dict[str, 
     return result
 
 
-def get_messages_for_model_from_message(message: types.Message) -> list[dict[str, str]]:
+def get_short_dialog(requester_tg_peer_id: int, old_request_id: int) -> list[dict[str, str]]:
+    old_dialog_step = db_dialog.get_dialog_step(old_request_id)
     return [
         {
             "role": "system",
-            "content": db_personal_settings.get_personal_settings(message.from_user.id).text_model_system_prompt
+            "content": db_personal_settings.get_personal_settings(requester_tg_peer_id).text_model_system_prompt
         },
         {
-            "role": "user", "content": message.reply_to_message.reply_to_message.text  # TODO: AttributeError: 'NoneType' object has no attribute 'text'
+            "role": "user", "content": old_dialog_step.request
         },
         {
-            "role": "assistant", "content": message.reply_to_message.text
+            "role": "assistant", "content": old_dialog_step.response
         },
     ]
 
 
-async def get_response_from_text_model(messages: list[dict[str, str]], model: str) -> str:
+async def get_response_from_text_model(messages: list[dict[str, str]], model: str, web_search: bool) -> str:
     client = AsyncClient()
-    response = await client.chat.completions.create(model=model, messages=messages, web_search=False)
+    response = await client.chat.completions.create(model=model, messages=messages, web_search=web_search)
     return response.choices[0].message.content
 
 
-async def process_request(message: types.Message, send_loading=True) -> str:
-    loading = None
-    if send_loading:
-        loading = LoadingMessage(message)
-        await loading.send()
-
-    if message.reply_to_message:
-        messages = get_messages_for_model_from_message(message)
-    else:
-        messages = get_messages_for_model_from_db(message.from_user.id)
-    messages.append({"role": "user", "content": message.text})
+async def process_request(request_id: int, request_text: str, requester_tg_peer_id: int,
+                          web_search=False, old_request_id_for_short_dialog: int | None = None) -> str:
+    messages = get_short_dialog(
+        requester_tg_peer_id=requester_tg_peer_id, old_request_id=old_request_id_for_short_dialog,
+    ) if old_request_id_for_short_dialog else get_all_dialog(
+        requester_tg_peer_id=requester_tg_peer_id,
+    )
+    messages.append({"role": "user", "content": request_text})
 
     response_text = await get_response_from_text_model(
-        messages=messages, model=db_personal_settings.get_personal_settings(message.from_user.id).text_model_name
+        messages=messages, model=db_personal_settings.get_personal_settings(requester_tg_peer_id).text_model_name,
+        web_search=web_search,
     )
 
     db_dialog.append_step_in_dialog(
-        user_tg_peer_id=message.from_user.id, message_id=message.message_id,
-        request=message.text, response=response_text,
+        user_tg_peer_id=requester_tg_peer_id, message_id=request_id,
+        request=request_text, response=response_text,
     )
 
-    if loading:
-        await loading.delete()
     return response_text
