@@ -8,11 +8,7 @@ from .base import DISPATCHER
 import settings
 
 
-ai.write_or_rewrite_new_user_info(
-    user_tg_peer_id=settings.BOT_DEVELOPER_TG_ID,
-    user_full_name="Matvey Filippov",
-    note="HOMER"
-)
+ai.write_or_rewrite_new_user_info(user_id=settings.BOT_DEVELOPER_TG_ID, user_full_name="Matvey Filippov", note="HOMER")
 
 
 class DialogAvailabilityCache:

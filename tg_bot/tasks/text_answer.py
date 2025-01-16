@@ -19,18 +19,18 @@ class TextDialogStates(StatesGroup):
 async def set_web_search_state(message: Message):
     await TextDialogStates.web_search.set()
     await message.reply(
-        text="➡️ Ваше следующее сообщение будет загружено в модель с флагом __Поиск в интернете__",
+        text="➡️ Ваше следующее сообщение будет загружено в модель с флагом _Поиск в интернете_",
         parse_mode="Markdown"
     )
 
 
 @DISPATCHER.message_handler(state=TextDialogStates.web_search)
-async def handle_request_and_use_web_search(message: Message, state: FSMContext):
+async def handle_request_and_use_web_search(message: Message, state: FSMContext):  # TODO: изучи web_search
     loading = LoadingMessage(message)
     await loading.send()
     response = await ai.process_text_request(
         request_id=message.message_id, request_text=message.text,
-        requester_tg_peer_id=message.from_user.id, web_search=True,
+        requester_id=message.from_user.id, web_search=True,
     )
     await loading.delete()
     try:
@@ -47,7 +47,7 @@ async def handle_message(message: Message):
     await loading.send()
     for _ in range(2):
         response = await ai.process_text_request(
-            request_id=message.message_id, request_text=message.text, requester_tg_peer_id=message.from_user.id,
+            request_id=message.message_id, request_text=message.text, requester_id=message.from_user.id,
         )
         try:
             await message.reply(response, parse_mode="Markdown")

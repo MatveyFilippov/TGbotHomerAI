@@ -23,16 +23,16 @@ def __rewrite_if_needed(user: User, user_full_name: str, note: str | None = "",
     return rewritten
 
 
-def write_or_rewrite_new_user_info(user_tg_peer_id: int, user_full_name: str, note: str | None = "",
+def write_or_rewrite_new_user_info(user_id: int, user_full_name: str, note: str | None = "",
                                    last_availability_update: datetime | None = None,
                                    days_period_for_using: int | None = None):
     if days_period_for_using is not None and not (0 <= days_period_for_using <= 366):
         raise ValueError(f"Invalid days period: {days_period_for_using}")
     with Session() as session:
-        user: User = session.query(User).get(user_tg_peer_id)
+        user: User = session.query(User).get(user_id)
         if not user:
             session.add(User(
-                tg_peer_id=user_tg_peer_id, user_full_name=user_full_name,
+                user_id=user_id, user_full_name=user_full_name,
                 note=note, days_period_for_using=days_period_for_using,
             ))
             session.commit()
@@ -41,16 +41,16 @@ def write_or_rewrite_new_user_info(user_tg_peer_id: int, user_full_name: str, no
             session.commit()
 
 
-def is_user_in_database(user_tg_peer_id: int) -> bool:
+def is_user_in_database(user_id: int) -> bool:
     with Session() as session:
-        return bool(session.query(User).get(user_tg_peer_id))
+        return bool(session.query(User).get(user_id))
 
 
-def get_available_days_to_use(user_tg_peer_id: int) -> int:
+def get_available_days_to_use(user_id: int) -> int:
     with Session() as session:
-        user: User = session.query(User).get(user_tg_peer_id)
+        user: User = session.query(User).get(user_id)
         if not user:
-            raise KeyError(f"No such user in database with TG PEER ID: {user_tg_peer_id}")
+            raise KeyError(f"No such user in database with ID: {user_id}")
         if not user.days_period_for_using:
             return 1
         days_passed = (settings.datetime_now() - user.last_availability_update).day

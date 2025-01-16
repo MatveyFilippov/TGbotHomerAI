@@ -12,8 +12,8 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'users'
 
-    tg_peer_id = Column(sqlalchemy.BIGINT, primary_key=True)
-    registered = Column(sqlalchemy.DateTime, nullable=False, default=settings.datetime_now)
+    user_id = Column(sqlalchemy.BIGINT, primary_key=True)
+    registered_at = Column(sqlalchemy.DateTime, nullable=False, default=settings.datetime_now)
 
     user_full_name = Column(sqlalchemy.Text, nullable=False)
     note = Column(sqlalchemy.Text, nullable=True)
@@ -25,11 +25,11 @@ class User(Base):
 class PersonalSettings(Base):
     __tablename__ = 'personal_settings'
 
-    tg_peer_id = Column(sqlalchemy.BIGINT, ForeignKey('users.tg_peer_id'), primary_key=True)
+    user_id = Column(sqlalchemy.BIGINT, ForeignKey('users.user_id'), primary_key=True)
 
     text_model_system_prompt = Column(
         sqlalchemy.Text, nullable=False,
-        default="Вы высококвалифицированный и надежный помощник. Во время своих ответов используйте разметку Telegram Markdow. При предоставлении кода убедитесь, что он внесён в специальные ковычки. Если в тексте вы хотите создать заголовок, то используй символ '▎' вместо '#' или других стандартных методов разметки, но только где это необходимо для организации текста."
+        default="Вы высококвалифицированный и надежный помощник внутри TelegramBot. Во время своих ответов используйте разметку Telegram Markdow. При предоставлении кода убедитесь, что он внесён в специальные ковычки. Если в тексте вы хотите создать заголовок, то используй символ '▎' вместо '#' или других стандартных методов разметки, но только где это необходимо для организации текста. Не забывайте создавать абзацы для поднятия читаемости ответов."
     )
     text_model_name = Column(sqlalchemy.Text, nullable=False, default="gpt-4o")
 
@@ -37,8 +37,8 @@ class PersonalSettings(Base):
 class Dialog(Base):
     __tablename__ = 'dialogs'
 
-    message_id = Column(sqlalchemy.BIGINT, primary_key=True)
-    dialog_owner_tg_peer_id = Column(sqlalchemy.BIGINT, ForeignKey('users.tg_peer_id'), nullable=False)
+    request_id = Column(sqlalchemy.BIGINT, primary_key=True)
+    dialog_owner_user_id = Column(sqlalchemy.BIGINT, ForeignKey('users.user_id'), nullable=False)
     response_time = Column(sqlalchemy.DateTime, nullable=False, default=settings.datetime_now)
 
     request = Column(sqlalchemy.Text, nullable=False)
