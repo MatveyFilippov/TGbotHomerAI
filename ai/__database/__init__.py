@@ -1,4 +1,3 @@
-from datetime import datetime
 import sqlalchemy
 from sqlalchemy import create_engine, Column, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
@@ -14,8 +13,13 @@ class User(Base):
     __tablename__ = 'users'
 
     tg_peer_id = Column(sqlalchemy.BIGINT, primary_key=True)
+    registered = Column(sqlalchemy.DateTime, nullable=False, default=settings.datetime_now)
+
     user_full_name = Column(sqlalchemy.Text, nullable=False)
     note = Column(sqlalchemy.Text, nullable=True)
+
+    last_availability_update = Column(sqlalchemy.DateTime, nullable=False, default=settings.datetime_now)
+    days_period_for_using = Column(sqlalchemy.Integer, nullable=True)
 
 
 class PersonalSettings(Base):
@@ -32,7 +36,7 @@ class Dialog(Base):
 
     message_id = Column(sqlalchemy.BIGINT, primary_key=True)
     dialog_owner_tg_peer_id = Column(sqlalchemy.BIGINT, ForeignKey('users.tg_peer_id'), nullable=False)
-    response_time = Column(sqlalchemy.DateTime, nullable=False, default=datetime.now)
+    response_time = Column(sqlalchemy.DateTime, nullable=False, default=settings.datetime_now)
 
     request = Column(sqlalchemy.Text, nullable=False)
     response = Column(sqlalchemy.Text, nullable=False)

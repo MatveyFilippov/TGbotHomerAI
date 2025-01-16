@@ -2,6 +2,7 @@ import logging
 import pytz
 from typing import Final
 import json
+from datetime import datetime
 
 
 class SettingsJSON:
@@ -72,3 +73,7 @@ logging.basicConfig(
     format="\n\n'%(name)s':\n%(levelname)s %(asctime)s --> %(message)s"
 )
 logging.getLogger('aiogram').setLevel(logging.ERROR)
+
+
+def datetime_now() -> datetime:
+    return datetime.now(BOT_TIMEZONE)

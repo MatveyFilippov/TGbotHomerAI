@@ -1,20 +1,60 @@
+from datetime import datetime
 from typing import Type
 from . import Session, User
+import settings
 
 
-def register_new_user(user_tg_peer_id: int, user_full_name: str, note: str | None = ""):
+def __rewrite_if_needed(user: User, user_full_name: str, note: str | None = "",
+                        last_availability_update: datetime | None = None,
+                        days_period_for_using: int | None = None) -> bool:
+    rewritten = False
+    if user.user_full_name != user_full_name:
+        user.user_full_name = user_full_name
+        rewritten = True
+    if note is not None and user.note != note:
+        user.note = note
+        rewritten = True
+    if last_availability_update is not None and user.last_availability_update != last_availability_update:
+        user.last_availability_update = last_availability_update
+        rewritten = True
+    if days_period_for_using is not None and user.days_period_for_using != days_period_for_using:
+        user.days_period_for_using = days_period_for_using
+        rewritten = True
+    return rewritten
+
+
+def write_or_rewrite_new_user_info(user_tg_peer_id: int, user_full_name: str, note: str | None = "",
+                                   last_availability_update: datetime | None = None,
+                                   days_period_for_using: int | None = None):
+    if days_period_for_using is not None and not (0 <= days_period_for_using <= 366):
+        raise ValueError(f"Invalid days period: {days_period_for_using}")
     with Session() as session:
-        session.add(User(
-            tg_peer_id=user_tg_peer_id,
-            user_full_name=user_full_name,
-            note=note,
-        ))
-        session.commit()
+        user: User = session.query(User).get(user_tg_peer_id)
+        if not user:
+            session.add(User(
+                tg_peer_id=user_tg_peer_id, user_full_name=user_full_name,
+                note=note, days_period_for_using=days_period_for_using,
+            ))
+            session.commit()
+            return
+        if __rewrite_if_needed(user, user_full_name, note, last_availability_update, days_period_for_using):
+            session.commit()
 
 
 def is_user_in_database(user_tg_peer_id: int) -> bool:
     with Session() as session:
         return bool(session.query(User).get(user_tg_peer_id))
+
+
+def get_available_days_to_use(user_tg_peer_id: int) -> int:
+    with Session() as session:
+        user: User = session.query(User).get(user_tg_peer_id)
+        if not user:
+            raise KeyError(f"No such user in database with TG PEER ID: {user_tg_peer_id}")
+        if not user.days_period_for_using:
+            return 1
+        days_passed = (settings.datetime_now() - user.last_availability_update).day
+        return user.days_period_for_using - days_passed
 
 
 def get_users_qty() -> int:
