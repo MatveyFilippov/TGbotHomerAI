@@ -20,11 +20,13 @@ async def error_handler(update: Update, exception: Exception):
 
 
 async def get_error_creator(update: Update, err_time: str) -> str:
+    creator = "Ошибка в самом коде"
     try:
         await base.send_message_to_user(
             user_tg_peer_id=update.message.chat.id,
             text=f"{err_time} --- *ERROR*\nПередал информацию об ошибке разработчику, попробуйте позже",
         )
-        return f"Ошибка от @{update.message.from_user.username}"
+        creator = f"Ошибка от @{update.message.from_user.username}"
     except AttributeError:
-        return "Ошибка в самом коде"
+        pass
+    return creator
