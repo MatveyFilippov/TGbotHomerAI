@@ -62,7 +62,8 @@ class SettingsJSON:
 
 BOT_API_TOKEN: Final = SettingsJSON.get(var_name="BOT_API_TOKEN")
 BOT_DEVELOPER_TG_ID: Final = SettingsJSON.get(var_name="BOT_DEVELOPER_TG_ID", required_type=int)
-BOT_ALLOWS_USERS: Final = SettingsJSON.get_optional(var_name="BOT_ALLOWS_USERS", default=[])
+
+LINK_TO_DATABASE: Final = SettingsJSON.get(var_name="LINK_TO_DATABASE")
 
 BOT_TIMEZONE: Final = pytz.timezone(SettingsJSON.get(var_name="BOT_TIMEZONE"))
 DATETIME_FORMAT: Final = "%Y-%m-%d %H:%M:%S"

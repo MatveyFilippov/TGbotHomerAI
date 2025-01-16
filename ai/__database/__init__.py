@@ -1,0 +1,42 @@
+from datetime import datetime
+import sqlalchemy
+from sqlalchemy import create_engine, Column, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import scoped_session, sessionmaker
+import settings
+
+
+engine = create_engine(settings.LINK_TO_DATABASE, echo=False)
+Base = declarative_base()
+
+
+class User(Base):
+    __tablename__ = 'users'
+
+    tg_peer_id = Column(sqlalchemy.BIGINT, primary_key=True)
+    user_full_name = Column(sqlalchemy.Text, nullable=False)
+    note = Column(sqlalchemy.Text, nullable=True)
+
+
+class PersonalSettings(Base):
+    __tablename__ = 'personal_settings'
+
+    tg_peer_id = Column(sqlalchemy.BIGINT, ForeignKey('users.tg_peer_id'), primary_key=True)
+
+    text_model_system_prompt = Column(sqlalchemy.Text, nullable=False, default="You are a highly knowledgeable and reliable assistant for professionals in applied sciences. Utilize Markdown formatting for clarity and presentation. When providing code snippets, ensure they are enclosed in appropriate code formatting. Maintain a professional, precise, and objective tone in all responses, prioritizing accuracy and relevance to meet the needs of users effectively.")
+    text_model_name = Column(sqlalchemy.Text, nullable=False, default="gpt-4o")
+
+
+class Dialog(Base):
+    __tablename__ = 'dialogs'
+
+    message_id = Column(sqlalchemy.BIGINT, primary_key=True)
+    dialog_owner_tg_peer_id = Column(sqlalchemy.BIGINT, ForeignKey('users.tg_peer_id'), nullable=False)
+    response_time = Column(sqlalchemy.DateTime, nullable=False, default=datetime.now)
+
+    request = Column(sqlalchemy.Text, nullable=False)
+    response = Column(sqlalchemy.Text, nullable=False)
+
+
+Base.metadata.create_all(engine)
+Session = scoped_session(sessionmaker(bind=engine))

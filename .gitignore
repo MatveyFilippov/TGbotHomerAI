@@ -4,5 +4,6 @@ __pycache__/
 /playground.py
 /BotSettings.JSON
 /ChatGPTBot.log
+/ChatGPTBot.db
 /sspd/
 /ssh_scp_project_delivery.py

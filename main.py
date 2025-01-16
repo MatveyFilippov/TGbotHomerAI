@@ -5,15 +5,36 @@ import logging
 import aiogram
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters.state import State, StatesGroup
+from aiogram.dispatcher.filters import Filter
 from aiogram.dispatcher import FSMContext
 import traceback
 from datetime import datetime
 import settings
+import ai
+from functools import lru_cache
 
 
 BOT = Bot(settings.BOT_API_TOKEN)
 dp = Dispatcher(BOT, storage=MemoryStorage())
 LOGGER = logging.getLogger()
+
+
+DIALOG_NOT_AVAILABLE_STATE = State()
+
+
+class DialogNotAvailable(Filter):
+    @staticmethod
+    @lru_cache(maxsize=ai.get_users_qty())
+    def is_dialog_available(tg_peer_id: int) -> bool:
+        return ai.is_user_in_database(tg_peer_id)
+
+    async def check(self, message: types.Message) -> bool:
+        if DialogNotAvailable.is_dialog_available(tg_peer_id=message.from_user.id):
+            await dp.current_state().set_state()
+            return False
+        else:
+            await DIALOG_NOT_AVAILABLE_STATE.set()
+            return True
 
 
 async def send_message_to_developer(text: str, kb: InlineKeyboardMarkup | None = None):
@@ -45,16 +66,40 @@ async def error_handler(update: types.Update, exception: Exception):
     await send_message_to_developer(text + f"\n\n<code>{error_text}</code>")
 
 
-@dp.message_handler(commands=["start"], state="*")
+@dp.message_handler(DialogNotAvailable())
+async def send_answer_if_dialog_not_available(message: types.Message):
+    await message.answer(
+        text="Извините, вы <b>не можете</b> пользоваться этим ботом, обратитесь к человеку, который дал вам ссылку 🤐",
+        parse_mode="HTML",
+    )
+
+
+@dp.message_handler(commands=["start", "help"], state="*")
 async def handle_start_command(message: types.Message):
-    await message.reply("Приветствую!")
+    await message.reply(f"Добро пожаловать в бота, {message.from_user.full_name}!")  # TODO: описать возможности
+
+
+@dp.message_handler(commands=["image"], state="*")
+async def start_creating_image(message: types.Message):
+    pass  # TODO...
+
+
+@dp.message_handler(commands=["reset"], state="*")
+async def reset_dialog_history(message: types.Message):
+    ai.delete_all_dialog(message.from_user.id)
+    await message.reply("Бот забыл всё о чём вы говорили 🧹")
 
 
 @dp.message_handler(content_types=ContentType.ANY, state="*")
 async def handle_message(message: types.Message):
-    await message.reply(
-        text="Извините, я не понял ваш запрос 😔", parse_mode="HTML",
-    )
+    for _ in range(2):
+        response = await ai.process_text_request(message)
+        try:
+            await message.reply(response, parse_mode="Markdown")
+            return
+        except aiogram.exceptions.CantParseEntities:
+            ai.delete_dialog_step(message.message_id)
+    await message.reply("🌋Извините, произошла ошибка, попробуйте сделать новый запрос", parse_mode="Markdown")
 
 
 @dp.callback_query_handler(state="*")
