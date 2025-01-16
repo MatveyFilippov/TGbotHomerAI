@@ -27,7 +27,10 @@ class PersonalSettings(Base):
 
     tg_peer_id = Column(sqlalchemy.BIGINT, ForeignKey('users.tg_peer_id'), primary_key=True)
 
-    text_model_system_prompt = Column(sqlalchemy.Text, nullable=False, default="You are a highly knowledgeable and reliable assistant for professionals in applied sciences. Utilize Markdown formatting for clarity and presentation. When providing code snippets, ensure they are enclosed in appropriate code formatting. Maintain a professional, precise, and objective tone in all responses, prioritizing accuracy and relevance to meet the needs of users effectively.")
+    text_model_system_prompt = Column(
+        sqlalchemy.Text, nullable=False,
+        default="Вы высококвалифицированный и надежный помощник. Во время своих ответов используйте разметку Telegram Markdow. При предоставлении кода убедитесь, что он внесён в специальные ковычки. Если в тексте вы хотите создать заголовок, то используй символ '▎' вместо '#' или других стандартных методов разметки, но только где это необходимо для организации текста."
+    )
     text_model_name = Column(sqlalchemy.Text, nullable=False, default="gpt-4o")
 
 

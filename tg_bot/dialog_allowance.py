@@ -56,6 +56,6 @@ class DialogNotAvailable(Filter):
 @DISPATCHER.message_handler(DialogNotAvailable())
 async def send_answer_if_dialog_not_available(message: Message):
     await message.answer(
-        text="Извините, вы <b>не можете</b> пользоваться этим ботом, обратитесь к человеку, который дал вам ссылку 🤐",
+        text="Извините, вы *не можете* пользоваться этим ботом, обратитесь к человеку, который дал вам ссылку 🤐",
         parse_mode="Markdown",
     )

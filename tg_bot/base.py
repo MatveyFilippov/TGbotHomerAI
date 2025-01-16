@@ -34,4 +34,4 @@ async def on_startup(dispatcher):
 
 async def on_shutdown(dispatcher):
     LOGGER.critical("Bot is shut down")
-    await send_message_to_developer("⚠️<b>Бот выключен</b>⚠️")
+    await send_message_to_developer("⚠️*Бот выключен*⚠️")

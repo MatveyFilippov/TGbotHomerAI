@@ -14,16 +14,16 @@ async def error_handler(update: Update, exception: Exception):
     error_creator = await get_error_creator(update, err_time)
 
     await base.send_message_to_developer(
-        f"{err_time}\nПроизошла ошибка <b>{err_name}</b> в функции <b>{def_name}</b>"
+        f"{err_time}\nПроизошла ошибка *{err_name}* в функции *{def_name}*"
     )
-    await base.send_message_to_developer(error_creator + f"\n\n<code>{error_text}</code>")
+    await base.send_message_to_developer(error_creator + f"\n\n```{error_text}```")
 
 
 async def get_error_creator(update: Update, err_time: str) -> str:
     try:
         await base.send_message_to_user(
             user_tg_peer_id=update.message.chat.id,
-            text=f"{err_time} --- <b>ERROR</b>\nПередал информацию об ошибке разработчику, попробуйте позже",
+            text=f"{err_time} --- *ERROR*\nПередал информацию об ошибке разработчику, попробуйте позже",
         )
         return f"Ошибка от @{update.message.from_user.username}"
     except AttributeError:
