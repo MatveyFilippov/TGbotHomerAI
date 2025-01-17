@@ -5,5 +5,5 @@ __pycache__/
 /BotSettings.JSON
 /ChatGPTBot.log
 /ChatGPTBot.db
-/sspd/
+/SSPDFiles/
 /ssh_scp_project_delivery.py
