@@ -36,7 +36,7 @@ async def handle_request_and_use_web_search(message: Message, state: FSMContext)
     try:
         await message.reply(response, parse_mode="Markdown")
         await state.set_state()
-    except exceptions.CantParseEntities:
+    except (exceptions.CantParseEntities, exceptions.MessageIsTooLong):
         ai.delete_dialog_step(message.message_id)
         await message.reply("🌋Извините, произошла ошибка, попробуйте сделать новый запрос", parse_mode="Markdown")
 
@@ -53,7 +53,7 @@ async def handle_message(message: Message):
             await message.reply(response, parse_mode="Markdown")
             await loading.delete()
             return
-        except exceptions.CantParseEntities:
+        except (exceptions.CantParseEntities, exceptions.MessageIsTooLong):
             ai.delete_dialog_step(message.message_id)
     await loading.delete()
     await message.reply("🌋Извините, произошла ошибка, попробуйте сделать новый запрос", parse_mode="Markdown")

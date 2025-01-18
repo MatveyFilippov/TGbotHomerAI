@@ -36,7 +36,9 @@ def get_short_dialog(requester_id: int, old_request_id: int) -> list[dict[str, s
 
 async def get_response_from_text_model(messages: list[dict[str, str]], model: str, web_search: bool) -> str:
     client = AsyncClient()
-    response = await client.chat.completions.create(model=model, messages=messages, web_search=web_search)
+    response = await client.chat.completions.create(
+        model=model, messages=messages, web_search=web_search, max_tokens=4096,
+    )
     return response.choices[0].message.content
 
 
