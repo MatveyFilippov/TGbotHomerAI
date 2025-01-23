@@ -1,30 +1,17 @@
 from ..base import DISPATCHER
+from .dialog_states import *
 from ..loading_message import LoadingMessage
 import ai
-from aiogram.types import Message, ContentType
 from aiogram import exceptions
+from aiogram.types import Message
 from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
 # TODO: process also for photo&document
 # TODO: process also for replied messages
 
 
-class TextDialogStates(StatesGroup):
-    web_search = State()
-
-
-@DISPATCHER.message_handler(commands=["web_search"])
-async def set_web_search_state(message: Message):
-    await TextDialogStates.web_search.set()
-    await message.reply(
-        text="➡️ Ваше следующее сообщение будет загружено в модель с флагом _Поиск в интернете_",
-        parse_mode="Markdown"
-    )
-
-
-@DISPATCHER.message_handler(state=TextDialogStates.web_search)
+@DISPATCHER.message_handler(state=FlagsToTextCreating.web_search)
 async def handle_request_and_use_web_search(message: Message, state: FSMContext):  # TODO: изучи web_search
     loading = LoadingMessage(message)
     await loading.send()
@@ -46,7 +33,7 @@ async def handle_message(message: Message):
     loading = LoadingMessage(message)
     await loading.send()
     for _ in range(2):
-        response = await ai.process_text_request(
+        response = await ai.process_text_request(  # TODO: old_request_id_for_short_dialog
             request_id=message.message_id, request_text=message.text, requester_id=message.from_user.id,
         )
         try:
