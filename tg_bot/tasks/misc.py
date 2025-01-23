@@ -39,6 +39,11 @@ async def handle_start_help_command(message: Message):
     await message.reply(HELP_ANSWER_TEXT.format(full_name=message.from_user.full_name), parse_mode="Markdown")
 
 
+@DISPATCHER.callback_query_handler(state="TODO")
+async def handle_todo_callback(callback: CallbackQuery):
+    await callback.answer("👷Данный блок находится в разработке...", show_alert=True)
+
+
 @DISPATCHER.callback_query_handler(state="*")
 async def handle_unknown_callback(callback: CallbackQuery):
     await callback.answer(f"Unknown callback: '{callback.data}'", show_alert=True)
