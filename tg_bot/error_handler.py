@@ -16,7 +16,7 @@ async def error_handler(update: Update, exception: Exception):
     await base.send_message_to_developer(
         f"{err_time}\nПроизошла ошибка *{err_name}* в функции *{def_name}*"
     )
-    await base.send_message_to_developer(error_creator + f"\n\n```{error_text}```")
+    await base.send_message_to_developer(error_creator + f"\n\n```log\n{error_text}\n```")
 
 
 async def get_error_creator(update: Update, err_time: str) -> str:
