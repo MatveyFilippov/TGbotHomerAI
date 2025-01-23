@@ -3,7 +3,6 @@ from .base import BOT, DISPATCHER
 from .base import on_startup as __on_startup
 from .base import on_shutdown as __on_shutdown
 from .error_handler import error_handler as __error_handler
-from .dialog_allowance import DialogAvailabilityCache
 from .tasks import register_all as __register_all_tasks
 
 
