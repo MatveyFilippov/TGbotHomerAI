@@ -1,0 +1,21 @@
+# Put here files & folders that you want to ignore in ssh/scp project delivering process
+# System will work with files in local project folder that you put in config
+# Supported keys:
+# Line starts with '#' is comment - system won't look them
+# Line ends with '/' is folder - system will ignore all files in this dir
+# Line starts with '/' is final filepath/folderpath
+# If line don't starts with any keys system will take it as 'marker' to ignore...
+# ... if filepath (split by `/` or `\`) contains 'marker' --- system will ignore it
+
+# For example:
+ssh_scp_project_delivery/
+/.git/
+.gitignore
+/playground.py
+venv/
+.idea/
+__pycache__/
+.DS_Store
+/README.md
+
+/ChatGPTBot.log
