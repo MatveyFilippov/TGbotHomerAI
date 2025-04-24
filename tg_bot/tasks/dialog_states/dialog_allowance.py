@@ -1,14 +1,11 @@
 from datetime import timedelta
 from aiogram.types import Message
-from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.filters import Filter
 import ai
 from functools import lru_cache
-from .base import DISPATCHER
+from ...base import DISPATCHER
+from .collection import DIALOG_NOT_AVAILABLE_STATE
 import settings
-
-
-ai.write_or_rewrite_new_user_info(user_id=settings.BOT_DEVELOPER_TG_ID, user_full_name="Matvey Filippov", note="HOMER")
 
 
 class DialogAvailabilityCache:
@@ -36,9 +33,6 @@ class DialogAvailabilityCache:
         return cls.__CACHE(tg_peer_id)
 
 
-DIALOG_NOT_AVAILABLE_STATE = State()
-
-
 class DialogNotAvailable(Filter):
     async def check(self, message: Message) -> bool:
         if DialogAvailabilityCache.is_dialog_available(tg_peer_id=message.from_user.id):
@@ -47,11 +41,3 @@ class DialogNotAvailable(Filter):
         else:
             await DIALOG_NOT_AVAILABLE_STATE.set()
             return True
-
-
-@DISPATCHER.message_handler(DialogNotAvailable())
-async def send_answer_if_dialog_not_available(message: Message):
-    await message.answer(
-        text="Извините, вы *не можете* пользоваться этим ботом, обратитесь к человеку, который дал вам ссылку 🤐",
-        parse_mode="Markdown",
-    )

@@ -1,0 +1,11 @@
+/.git/
+.gitignore
+/playground.py
+venv/
+.idea/
+__pycache__/
+.DS_Store
+/README.md
+ssh_scp_project_delivery/
+/ChatGPTBot.log
+/ChatGPTBot.db

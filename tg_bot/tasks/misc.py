@@ -1,4 +1,6 @@
 from ..base import DISPATCHER
+from ..global_tools import delete_message
+from ai import get_user
 from aiogram.types import CallbackQuery, Message
 
 
@@ -35,8 +37,21 @@ HELP_ANSWER_TEXT = """Добро пожаловать в бота, {full_name}!
 
 @DISPATCHER.message_handler(commands=["start", "help"], state="*")
 async def handle_start_help_command(message: Message):
-    # TODO: replace message.from_user.full_name to database.user.full_name
-    await message.reply(HELP_ANSWER_TEXT.format(full_name=message.from_user.full_name), parse_mode="Markdown")
+    await message.reply(
+        text=HELP_ANSWER_TEXT.format(full_name=get_user(message.from_user.id).user_full_name), parse_mode="Markdown"
+    )
+
+
+@DISPATCHER.callback_query_handler(text="CLOSE_MSG", state="*")
+async def handle_close_message_request(callback: CallbackQuery):
+    await callback.answer("Сообщение закрыто")
+    await delete_message(callback.message)
+    await delete_message(callback.message.reply_to_message)
+
+
+@DISPATCHER.callback_query_handler(text="TODO", state="*")
+async def handle_todo_callback(callback: CallbackQuery):
+    await callback.answer("👷Данный блок находится в разработке...", show_alert=True)
 
 
 @DISPATCHER.callback_query_handler(state="*")

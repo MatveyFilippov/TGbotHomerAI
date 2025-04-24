@@ -10,10 +10,12 @@ certifi==2024.12.14
 cffi==1.17.1
 charset-normalizer==3.4.1
 cryptography==44.0.0
+curl_cffi==0.10.0
 frozenlist==1.5.0
-g4f==0.4.1.2
+g4f==0.5.1.5
 greenlet==3.1.1
 idna==3.10
+Levenshtein==0.26.1
 magic-filter==1.0.12
 multidict==6.1.0
 nest-asyncio==1.6.0
@@ -23,9 +25,10 @@ pycparser==2.22
 pycryptodome==3.21.0
 PyNaCl==1.5.0
 pytz==2024.2
+RapidFuzz==3.11.0
 requests==2.32.3
 SQLAlchemy==2.0.37
-sspd @ git+https://github.com/MatveyFilippov/SSPD.git@d9ead1c24298d69ccb6dd23e015a7c6838ca0d41
+sspd @ git+https://github.com/MatveyFilippov/SSPD.git@1acd2c147e77160bfd97d46aeba13f0be52ed434
 typing_extensions==4.12.2
 urllib3==2.3.0
 yarl==1.18.3

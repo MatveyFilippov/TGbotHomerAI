@@ -4,10 +4,7 @@ from g4f.client import AsyncClient
 
 
 def get_all_dialog(requester_id: int) -> list[dict[str, str]]:
-    result = [{
-        "role": "system",
-        "content": db_personal_settings.get_personal_settings(requester_id).text_model_system_prompt
-    }]
+    result = []
     for step in db_dialog.get_dialog(requester_id):
         result.append({
             "role": "user", "content": step.request
@@ -15,6 +12,10 @@ def get_all_dialog(requester_id: int) -> list[dict[str, str]]:
         result.append({
             "role": "assistant", "content": step.response
         })
+    result.append({
+        "role": "system",
+        "content": db_personal_settings.get_personal_settings(requester_id).text_model_system_prompt
+    })
     return result
 
 
@@ -22,21 +23,21 @@ def get_short_dialog(requester_id: int, old_request_id: int) -> list[dict[str, s
     old_dialog_step = db_dialog.get_dialog_step(old_request_id)
     return [
         {
-            "role": "system",
-            "content": db_personal_settings.get_personal_settings(requester_id).text_model_system_prompt
-        },
-        {
             "role": "user", "content": old_dialog_step.request
         },
         {
             "role": "assistant", "content": old_dialog_step.response
+        },
+        {
+            "role": "system",
+            "content": db_personal_settings.get_personal_settings(requester_id).text_model_system_prompt
         },
     ]
 
 
 async def get_response_from_text_model(messages: list[dict[str, str]], model: str, web_search: bool) -> str:
     client = AsyncClient()
-    response = await client.chat.completions.create(
+    response = await client.chat.completions.create(  # TODO: изучи web_search
         model=model, messages=messages, web_search=web_search, max_tokens=4096,
     )
     return response.choices[0].message.content
