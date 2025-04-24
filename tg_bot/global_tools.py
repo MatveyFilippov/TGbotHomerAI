@@ -21,7 +21,7 @@ class ContainerCallback:
 
     @lru_cache
     def get(self, appender) -> str:
-        return f"{self.__callback_startswith}:{appender}"
+        return self.__callback_startswith + ":" + str(appender)
 
     @lru_cache
     def parse(self, callback: str, required_type=str):

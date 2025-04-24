@@ -1,5 +1,5 @@
 import aiogram as __aiogram
-from .base import DISPATCHER as __DISPATCHER
+from .base import DISPATCHER as __DISPATCHER, LOGGER as __LOGGER
 from .global_tools import send_message_to_developer as __send_message_to_developer
 from .error_handler import error_handler as __error_handler
 from .tasks import register_all as __register_all_tasks
@@ -11,7 +11,7 @@ async def __on_startup(dispatcher):
 
 
 async def __on_shutdown(dispatcher):
-    base.LOGGER.critical("Bot is shut down")
+    __LOGGER.critical("Bot is shut down")
     await __send_message_to_developer("⚠️*Бот выключен*⚠️")
 
 
