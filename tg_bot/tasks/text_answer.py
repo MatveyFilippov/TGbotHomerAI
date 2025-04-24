@@ -11,7 +11,7 @@ from aiogram.dispatcher import FSMContext
 async def handle_message(message: Message, state: FSMContext):
     request_text = message.text
     if not request_text:  # TODO: process also for photo&document
-        await message.reply("💔 Извините, в данный момент *поддерживаются только текстовые запросы*", parse_mode="Markdown")
+        await message.reply("💔 Sorry, currently *only text queries are supported*", parse_mode="Markdown")
         return
     is_web_search_required = await state.get_state() == FlagsToTextCreating.web_search.state
 
@@ -31,4 +31,4 @@ async def handle_message(message: Message, state: FSMContext):
             ai.delete_dialog_step(message.message_id)
 
     await loading.delete()
-    await message.reply("🌋Извините, произошла ошибка, попробуйте сделать новый запрос", parse_mode="Markdown")
+    await message.reply("🌋 Sorry, an error occurred, please try making a new request", parse_mode="Markdown")

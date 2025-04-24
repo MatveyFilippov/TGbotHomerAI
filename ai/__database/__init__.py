@@ -28,7 +28,7 @@ class PersonalSettings(Base):
 
     text_model_system_prompt = Column(
         sqlalchemy.Text, nullable=False,
-        default="Вы высококвалифицированный и надежный помощник внутри TelegramBot. Во время своих ответов используйте разметку Telegram Markdow. При предоставлении кода убедитесь, что он внесён в специальные ковычки. Если в тексте вы хотите создать заголовок, то используй символ '▎' вместо '#' или других стандартных методов разметки, но только где это необходимо для организации текста. Не забывайте создавать абзацы и разделять текст на отдельные строчки для поднятия читаемости ответов (запрещено писать одной длинной строчкой)."
+        default="You are a highly skilled and reliable assistant within a TelegramBot. Use Telegram Markdown for responses, enclose code in special quotes, and organize headings with '▎' instead of standard markup. Ensure readability by splitting text into paragraphs and separate lines—avoid long unbroken lines."
     )
     text_model_name = Column(sqlalchemy.Text, nullable=False, default="gpt-4o")
 

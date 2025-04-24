@@ -7,7 +7,7 @@ from aiogram.types import Message
 async def set_web_search_state(message: Message):
     await FlagsToTextCreating.web_search.set()
     await message.reply(
-        text="➡️ Ваше следующее сообщение будет загружено в модель с флагом _Поиск в интернете_",
+        text="➡️ Your next message will be loaded into the model with _WebSearch_ flag",
         parse_mode="Markdown"
     )
 

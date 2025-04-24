@@ -6,13 +6,13 @@ from .tasks import register_all as __register_all_tasks
 
 
 async def __on_startup(dispatcher):
-    await __send_message_to_developer("Бот был отключен -> работает 🐥")
+    await __send_message_to_developer("The bot was disabled, now it works 🐥")
     print("Bot is alive")
 
 
 async def __on_shutdown(dispatcher):
     __LOGGER.critical("Bot is shut down")
-    await __send_message_to_developer("⚠️*Бот выключен*⚠️")
+    await __send_message_to_developer("⚠️*The bot is shut down*⚠️")
 
 
 def start():

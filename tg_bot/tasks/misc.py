@@ -4,35 +4,35 @@ from ai import get_user
 from aiogram.types import CallbackQuery, Message
 
 
-HELP_ANSWER_TEXT = """Добро пожаловать в бота, {full_name}!
+HELP_ANSWER_TEXT = """Welcome to the bot, {full_name}!
 
-Этот бот разработан для *свободного доступа* к различным нейронным моделям, включая:
-- Обработку документов
-- Создание изображений
-- Генерацию текстовых ответов
-- И многое другое
+This bot is designed for *free access* to various neural models, including:
+- Document processing
+- Image generation
+- Text response generation
+- And much more
 
-*Текстовая генерация*
-Отправляйте сообщения и получайте ответы.
-Каждый шаг переписки сохраняется в памяти модели, что позволяет вести диалог.
-Если вы отвечаете на сообщение модели через `reply`, то модель получит суженную переписку до данного шага.
+*Text Generation*
+Send messages and receive responses.
+Each conversation step is saved in the model's memory, allowing for continuous dialogue.
+If you reply to the model's message using `reply`, the model will receive the narrowed conversation context up to that step.
 
-*Анализ вложенных документов и фотографий*
-Работает по принципу обычной _текстовой генерации_.
-Просто прикрепляйте ваш файл или фото и добавляйте описание задачи.
+*Analysis of Attached Documents and Photos*
+Works on the principle of regular _text generation_.
+Simply attach your file or photo and add a task description.
 
-*Генерация изображений*
-Используйте команду `/image`, чтобы запустить отдельную ветку диалога только для создания фотографии.
+*Image Generation*
+Use the `/image` command to start a separate dialogue thread specifically for image creation.
 
-*Поиск в интернете*
-Команда `/web_search` при следующем текстовом запросе добавит в модель флаг поиска ответов в сети.
-Также будет учитываться контекст вашего диалога, как и при обычной _текстовой генерации_.
+*Web Search*
+The `/web_search` command will add a network search flag to your next text query.
+The model will also consider your dialogue context, just like in regular _text generation_.
 
-*Прочее*
-- `/reset` - сбросить диалог из памяти модели
-- `/personal_settings` - настройка бота под себя
+*Other Commands*
+- `/reset` - clear the dialogue from the model's memory
+- `/personal_settings` - customize the bot for your needs
 
-В настоящий момент бот находится в разработке, и множество функций недоступны..."""
+Currently, the bot is under development, and many features are unavailable..."""
 
 
 @DISPATCHER.message_handler(commands=["start", "help"], state="*")
@@ -44,14 +44,14 @@ async def handle_start_help_command(message: Message):
 
 @DISPATCHER.callback_query_handler(text="CLOSE_MSG", state="*")
 async def handle_close_message_request(callback: CallbackQuery):
-    await callback.answer("Сообщение закрыто")
+    await callback.answer("Message is closed")
     await delete_message(callback.message)
     await delete_message(callback.message.reply_to_message)
 
 
 @DISPATCHER.callback_query_handler(text="TODO", state="*")
 async def handle_todo_callback(callback: CallbackQuery):
-    await callback.answer("👷Данный блок находится в разработке...", show_alert=True)
+    await callback.answer("👷 This block is under development...", show_alert=True)
 
 
 @DISPATCHER.callback_query_handler(state="*")
@@ -61,5 +61,5 @@ async def handle_unknown_callback(callback: CallbackQuery):
 
 @DISPATCHER.edited_message_handler(state="*")
 async def handle_edited_message(message: Message):
-    await message.reply("""🚫Вы внесли изменения, а, к сожалению, в нашем боте *НЕ ПРЕДУСМОТРЕНА* такая функция(
-    \nМодель *НЕ УВИДИТ* ваших изменений. Для запроса отправьте ещё одно сообщение""", parse_mode="Markdown")
+    await message.reply("""🚫You made changes, but unfortunately, our bot *DOES NOT SUPPORT* this feature(
+    \nThe model *WILL NOT SEE* your changes. Please send another message to make a request""", parse_mode="Markdown")

@@ -14,19 +14,17 @@ async def error_handler(update: Update, exception: Exception):
     error_creator = await get_error_creator(update, err_time)
 
     await global_tools.send_message_to_developer(
-        f"{err_time}\nПроизошла ошибка *{err_name}* в функции *{def_name}*"
+        f"{err_time}\nUnexpected error occurred <b>{err_name}</b> in <b>{def_name}</b>"
     )
     await global_tools.send_message_to_developer(error_creator + f"\n\n```log\n{error_text}\n```")
 
 
 async def get_error_creator(update: Update, err_time: str) -> str:
-    creator = "Ошибка в самом коде"
     try:
         await global_tools.send_message_to_user(
             user_tg_peer_id=update.message.chat.id,
-            text=f"{err_time} --- *ERROR*\nПередал информацию об ошибке разработчику, попробуйте позже",
+            text=f"{err_time} --- <b>ERROR</b>\nOops, something went wrong 🛠️\nReported the bug — please try again soon"
         )
-        creator = f"Ошибка от @{update.message.from_user.username}"
+        return "Error from @" + update.message.from_user.username
     except AttributeError:
-        pass
-    return creator
+        return "Error in source code"

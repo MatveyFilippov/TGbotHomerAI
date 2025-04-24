@@ -11,7 +11,7 @@ class LoadingMessage:
 
     async def send(self):
         await DialogStates.answer_is_creating.set()
-        self.__loading_message = await self.__request_message.answer("Думаю...")
+        self.__loading_message = await self.__request_message.answer("Thinking...")
 
     async def delete(self):
         await unset_all_states(self.__user_tg_peer_id)
