@@ -12,9 +12,5 @@ async def set_web_search_state(message: Message):
     )
 
 
-async def set_answer_is_creating_state():
-    await DialogStates.answer_is_creating.set()
-
-
 async def unset_all_states(user_tg_peer_id: int):
     await DISPATCHER.current_state(chat=user_tg_peer_id, user=user_tg_peer_id).set_state(None)

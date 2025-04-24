@@ -13,7 +13,7 @@ class Direction(Enum):
     run_setup = 8
 
     @classmethod
-    def get_direction(cls):
+    def get_direction(cls) -> 'Direction':
         print("Choose what will be done")
         for direction in cls:
             name = direction.name.replace("_", " ").title()
@@ -22,4 +22,4 @@ class Direction(Enum):
             return cls(int(input(": ").strip()))
         except ValueError:
             print("No such variant -> exit")
-            return cls(0)
+            return cls.exit

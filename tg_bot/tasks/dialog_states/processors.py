@@ -16,6 +16,6 @@ async def send_answer_if_dialog_not_available(message: Message):
 @DISPATCHER.message_handler(state=DialogStates.answer_is_creating)
 async def set_web_search_state(message: Message, state: FSMContext):
     await message.reply(
-        text="⏰В настоящий момент **обрабатывается** ваше **прошлое сообщение**, пожалуйста, дождитесь ответа и задайте новый запрос...",
+        text="⏰ В настоящий момент **обрабатывается** ваше **прошлое сообщение**, пожалуйста, дождитесь ответа и задайте новый запрос...",
         parse_mode="Markdown"
     )

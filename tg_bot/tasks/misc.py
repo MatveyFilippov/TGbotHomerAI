@@ -1,4 +1,5 @@
 from ..base import DISPATCHER
+from ..global_tools import delete_message
 from ai import get_user
 from aiogram.types import CallbackQuery, Message
 
@@ -39,6 +40,13 @@ async def handle_start_help_command(message: Message):
     await message.reply(
         text=HELP_ANSWER_TEXT.format(full_name=get_user(message.from_user.id).user_full_name), parse_mode="Markdown"
     )
+
+
+@DISPATCHER.callback_query_handler(text="CLOSE_MSG", state="*")
+async def handle_close_message_request(callback: CallbackQuery):
+    await callback.answer("Сообщение закрыто")
+    await delete_message(callback.message)
+    await delete_message(callback.message.reply_to_message)
 
 
 @DISPATCHER.callback_query_handler(text="TODO", state="*")

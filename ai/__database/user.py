@@ -46,6 +46,14 @@ def is_user_in_database(user_id: int) -> bool:
         return bool(session.get(User, user_id))
 
 
+def get_user(user_id: int) -> Type[User]:
+    with Session() as session:
+        user = session.get(User, user_id)
+        if not user:
+            raise KeyError(f"No such user in database with ID: {user_id}")
+        return user
+
+
 def get_available_days_to_use(user_id: int) -> int:
     with Session() as session:
         user: User = session.get(User, user_id)

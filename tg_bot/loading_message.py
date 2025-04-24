@@ -1,4 +1,5 @@
-from .tasks.dialog_states import set_answer_is_creating_state, unset_all_states
+from .tasks.dialog_states import unset_all_states
+from .tasks.dialog_states.collection import DialogStates
 from aiogram import types, exceptions
 
 
@@ -9,7 +10,7 @@ class LoadingMessage:
         self.__loading_message: types.Message = None
 
     async def send(self):
-        await set_answer_is_creating_state()
+        await DialogStates.answer_is_creating.set()
         self.__loading_message = await self.__request_message.answer("Думаю...")
 
     async def delete(self):

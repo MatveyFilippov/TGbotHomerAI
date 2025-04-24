@@ -10,3 +10,4 @@ class FlagsToTextCreating(StatesGroup):  # TODO: add state when bot already crea
 
 class DialogStates(StatesGroup):
     answer_is_creating = State()
+    choosing_text_model = State()
