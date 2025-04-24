@@ -17,7 +17,7 @@ def __remove_unused_files():
         print_response=True, ignore_error=True,
     )
     sspd.tasks.execute_remote_command(
-        f"find {sspd.base.REMOTE_PROJECT_DIR_PATH}"+""" -type d -name "__pycache__" -not -path "*/venv/*" -exec rm -f {} +""",
+        f"find {sspd.base.REMOTE_PROJECT_DIR_PATH}"+""" -type d -name "__pycache__" -not -path "*/venv/*" -exec rm -rf {} +""",
         print_response=True, ignore_error=True,
     )
     sspd.tasks.execute_remote_command(
@@ -41,5 +41,5 @@ def run_remote_setup():
     __execute_script()
     __remove_unused_files()
     sspd.tasks.send_file_to_remote_server(
-        local_filepath="main.py", remote_filepath=f"{sspd.base.REMOTE_PROJECT_DIR_PATH}/main.py",
+        local_filepath="../main.py", remote_filepath=f"{sspd.base.REMOTE_PROJECT_DIR_PATH}/main.py",
     )
