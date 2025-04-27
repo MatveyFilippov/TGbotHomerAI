@@ -30,12 +30,12 @@ class SettingsJSON:
             return cls.__ask_and_write(var_name=var_name, required_type=required_type, prompt=prompt)
 
     @classmethod
-    def get_optional(cls, var_name: str, default=None):
+    def get_optional(cls, var_name: str, default=None, write_default=True):
         json_file_dict = cls.__get_dict_from_json_file()
         try:
             return json_file_dict[var_name]
         except (KeyError, TypeError):
-            if default is not None:
+            if default is not None and write_default:
                 cls.__append_to_json_file(key=var_name, value=default)
             return default
 
@@ -63,16 +63,14 @@ class SettingsJSON:
 
 BOT_API_TOKEN: Final = SettingsJSON.get(var_name="BOT_API_TOKEN")
 BOT_DEVELOPER_TG_ID: Final = SettingsJSON.get(var_name="BOT_DEVELOPER_TG_ID", required_type=int)
-
 LINK_TO_DATABASE: Final = SettingsJSON.get(var_name="LINK_TO_DATABASE")
+BOT_TIMEZONE: Final = pytz.timezone(SettingsJSON.get_optional(var_name="BOT_TIMEZONE", default="Europe/Moscow"))
+DATETIME_FORMAT: Final = SettingsJSON.get_optional(var_name="DATETIME_FORMAT", default="%Y-%m-%d %H:%M:%S")
 
-BOT_TIMEZONE: Final = pytz.timezone(SettingsJSON.get(var_name="BOT_TIMEZONE"))
-DATETIME_FORMAT: Final = "%Y-%m-%d %H:%M:%S"
 logging.basicConfig(
     level=logging.INFO, filename=f"ChatGPTBot.log", encoding="UTF-8", datefmt=DATETIME_FORMAT,
     format="\n\n'%(name)s':\n%(levelname)s %(asctime)s --> %(message)s"
 )
-logging.getLogger('aiogram').setLevel(logging.ERROR)
 
 
 def datetime_now() -> datetime:

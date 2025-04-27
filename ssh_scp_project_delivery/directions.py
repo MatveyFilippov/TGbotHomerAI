@@ -1,16 +1,16 @@
-from enum import Enum
+from enum import Enum, auto
 
 
 class Direction(Enum):
     exit = 0
-    update_code = 1
-    download_logs = 2
-    delete_logs = 3
-    delete_database = 4
-    stop_running = 5
-    start_running = 6
-    restart_running = 7
-    run_setup = 8
+    update_code = auto()
+    download_log = auto()
+    delete_log = auto()
+    delete_database = auto()
+    stop_running = auto()
+    start_running = auto()
+    restart_running = auto()
+    run_setup = auto()
 
     @classmethod
     def get_direction(cls) -> 'Direction':

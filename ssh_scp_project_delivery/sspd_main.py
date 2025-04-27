@@ -6,9 +6,9 @@ if __name__ == "__main__":
             user_decision = Direction.get_direction()
             if user_decision == Direction.exit:
                 break
-            elif user_decision == Direction.download_logs:
+            elif user_decision == Direction.download_log:
                 sspd.tasks.download_log_file()
-            elif user_decision == Direction.delete_logs:
+            elif user_decision == Direction.delete_log:
                 sspd.tasks.execute_remote_command(
                     command="rm ChatGPTBot.log", in_dir=sspd.base.REMOTE_PROJECT_DIR_PATH, ignore_error=True,
                 )

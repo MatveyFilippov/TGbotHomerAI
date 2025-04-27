@@ -1,8 +1,11 @@
+import logging
 import sqlalchemy
 from sqlalchemy import create_engine, Column, ForeignKey
 from sqlalchemy.orm import scoped_session, sessionmaker, declarative_base
 import settings
 
+
+logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
 
 engine = create_engine(settings.LINK_TO_DATABASE, echo=False)
 Base = declarative_base()
