@@ -3,7 +3,7 @@ __pycache__/
 .DS_Store
 /playground.py
 /BotSettings.JSON
-/ChatGPTBot.log
-/ChatGPTBot.db
+/TGbotHomerAI.log
+/TGbotHomerAI.db
 /ssh_scp_project_delivery/SSPDFiles/ProjectDelivery.ini
 /har_and_cookies/

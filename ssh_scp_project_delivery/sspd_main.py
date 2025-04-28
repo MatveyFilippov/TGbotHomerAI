@@ -10,11 +10,11 @@ if __name__ == "__main__":
                 sspd.tasks.download_log_file()
             elif user_decision == Direction.delete_log:
                 sspd.tasks.execute_remote_command(
-                    command="rm ChatGPTBot.log", in_dir=sspd.base.REMOTE_PROJECT_DIR_PATH, ignore_error=True,
+                    command="rm TelegramBots.log", in_dir=sspd.base.REMOTE_PROJECT_DIR_PATH, ignore_error=True,
                 )
             elif user_decision == Direction.delete_database:
                 sspd.tasks.execute_remote_command(
-                    command="rm ChatGPTBot.db", in_dir=sspd.base.REMOTE_PROJECT_DIR_PATH,
+                    command="rm TelegramBots.db", in_dir=sspd.base.REMOTE_PROJECT_DIR_PATH,
                 )
             elif user_decision == Direction.run_setup:
                 from remote_setup_runner import run_remote_setup

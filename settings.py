@@ -68,7 +68,7 @@ BOT_TIMEZONE: Final = pytz.timezone(SettingsJSON.get_optional(var_name="BOT_TIME
 DATETIME_FORMAT: Final = SettingsJSON.get_optional(var_name="DATETIME_FORMAT", default="%Y-%m-%d %H:%M:%S")
 
 logging.basicConfig(
-    level=logging.INFO, filename=f"ChatGPTBot.log", encoding="UTF-8", datefmt=DATETIME_FORMAT,
+    level=logging.INFO, filename=f"TGbotHomerAI.log", encoding="UTF-8", datefmt=DATETIME_FORMAT,
     format="\n\n'%(name)s':\n%(levelname)s %(asctime)s --> %(message)s"
 )
 

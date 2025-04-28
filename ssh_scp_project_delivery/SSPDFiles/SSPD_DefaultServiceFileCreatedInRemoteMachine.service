@@ -1,17 +1,17 @@
 [Unit]
-Description=chatGPT_TGbot
+Description=TGbotHomerAI
 After=syslog.target
 After=network.target
 
 [Service]
-WorkingDirectory=/root/PyProjects/chatGPT_TGbot
+WorkingDirectory=/root/PyProjects/TGbotHomerAI
 
 User=root
 Group=root
 
 Type=simple
 Restart=always
-ExecStart=/root/PyProjects/chatGPT_TGbot/venv/bin/python3 /root/PyProjects/chatGPT_TGbot/main.py
+ExecStart=/root/PyProjects/TGbotHomerAI/venv/bin/python3 /root/PyProjects/TGbotHomerAI/main.py
 
 [Install]
 WantedBy=multi-user.target
