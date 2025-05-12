@@ -1,15 +1,14 @@
-from typing import Type
 from . import Session, Dialog
 
 
-def get_dialog(user_id: int) -> list[Type[Dialog]]:
+def get_dialog(user_id: int) -> list[Dialog]:
     with Session() as session:
         return session.query(Dialog).filter_by(
             dialog_owner_user_id=user_id
         ).all()
 
 
-def get_dialog_step(request_id: int) -> Type[Dialog]:
+def get_dialog_step(request_id: int) -> Dialog:
     with Session() as session:
         step = session.get(Dialog, request_id)
         if step:

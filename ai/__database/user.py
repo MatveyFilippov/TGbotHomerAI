@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Type
 from . import Session, User
 import settings
 
@@ -46,7 +45,7 @@ def is_user_in_database(user_id: int) -> bool:
         return bool(session.get(User, user_id))
 
 
-def get_user(user_id: int) -> Type[User]:
+def get_user(user_id: int) -> User:
     with Session() as session:
         user = session.get(User, user_id)
         if not user:
@@ -70,7 +69,7 @@ def get_users_qty() -> int:
         return len(session.query(User).all())
 
 
-def iter_all_users() -> iter(list[Type[User]]):
+def iter_all_users() -> iter(list[User]):
     with Session() as session:
         users = session.query(User).all()
     for user_obj in users:

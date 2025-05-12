@@ -1,9 +1,8 @@
 from . import Session, PersonalSettings
 from .. import models
-from typing import Type
 
 
-def __get_or_create_personal_settings(session: Session, user_id: int) -> Type[PersonalSettings]:
+def __get_or_create_personal_settings(session: Session, user_id: int) -> PersonalSettings:
     personal_settings = session.get(PersonalSettings, user_id)
     if not personal_settings:
         session.add(PersonalSettings(user_id=user_id))
@@ -12,7 +11,7 @@ def __get_or_create_personal_settings(session: Session, user_id: int) -> Type[Pe
     return personal_settings
 
 
-def get_personal_settings(user_id: int) -> Type[PersonalSettings]:
+def get_personal_settings(user_id: int) -> PersonalSettings:
     with Session() as session:
         return __get_or_create_personal_settings(session, user_id)
 
