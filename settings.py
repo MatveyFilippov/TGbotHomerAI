@@ -62,7 +62,13 @@ class SettingsJSON:
 
 BOT_API_TOKEN: Final = SettingsJSON.get(var_name="BOT_API_TOKEN")
 BOT_DEVELOPER_TG_ID: Final = SettingsJSON.get(var_name="BOT_DEVELOPER_TG_ID", required_type=int)
-LINK_TO_DATABASE: Final = SettingsJSON.get(var_name="LINK_TO_DATABASE")
+LINK_TO_DATABASE: Final = SettingsJSON.get(var_name="LINK_TO_DATABASE", prompt=(
+    "Use:\n * SQLite: '"
+    "sqlite:///{path_to_db_file}"
+    "'\n * PostgreSQL: '"
+    "postgresql+psycopg2://{user}:{password}@{ip}:{port}/{db_name}"
+    "'\nWrite link to db: "
+))
 BOT_TIMEZONE: Final = pytz.timezone(SettingsJSON.get_optional(var_name="BOT_TIMEZONE", default="Europe/Moscow"))
 DATETIME_FORMAT: Final = SettingsJSON.get_optional(var_name="DATETIME_FORMAT", default="%Y-%m-%d %H:%M:%S")
 
