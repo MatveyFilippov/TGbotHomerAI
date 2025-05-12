@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 from aiogram.types import Message
 from aiogram.dispatcher.filters import Filter
 import ai
@@ -17,16 +17,16 @@ class DialogAvailabilityCache:
 
     __CACHE = lru_cache()(is_dialog_available_without_cache)
     __CACHE_CLEAR_PERIOD = timedelta(days=1)
-    __last_reset = settings.datetime_now()
+    __last_reset = datetime.now(settings.BOT_TIMEZONE)
 
     @classmethod
     def clear_cache(cls):
         cls.__CACHE.cache_clear()
-        cls.__last_reset = settings.datetime_now()
+        cls.__last_reset = datetime.now(settings.BOT_TIMEZONE)
 
     @classmethod
     def is_dialog_available(cls, tg_peer_id: int) -> bool:
-        current_time = settings.datetime_now()
+        current_time = datetime.now(settings.BOT_TIMEZONE)
         if (current_time - cls.__last_reset) > cls.__CACHE_CLEAR_PERIOD:
             cls.__CACHE.cache_clear()
             cls.__last_reset = current_time

@@ -60,7 +60,7 @@ def get_available_days_to_use(user_id: int) -> int:
             raise KeyError(f"No such user in database with ID: {user_id}")
         if not user.days_period_for_using:
             return 1
-        days_passed = (settings.datetime_now() - user.last_availability_update).day
+        days_passed = (datetime.now(settings.BOT_TIMEZONE) - user.last_availability_update).day
         return user.days_period_for_using - days_passed
 
 
