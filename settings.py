@@ -71,6 +71,8 @@ logging.basicConfig(
     level=logging.INFO, filename=f"TGbotHomerAI.log", encoding="UTF-8", datefmt=DATETIME_FORMAT,
     format="\n\n'%(name)s':\n%(levelname)s %(asctime)s --> %(message)s"
 )
+logging.getLogger('aiogram').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
 
 
 def datetime_now() -> datetime:

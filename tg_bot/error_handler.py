@@ -2,6 +2,7 @@ import settings
 from aiogram.types import Update
 import traceback
 from . import base, global_tools
+import logging
 
 
 async def error_handler(update: Update, exception: Exception):
@@ -9,7 +10,7 @@ async def error_handler(update: Update, exception: Exception):
     err_name, def_name = type(exception).__name__, traceback.extract_tb(exception.__traceback__)[-1].name
     error_text = "".join(traceback.format_exception(type(exception), exception, exception.__traceback__))
 
-    base.LOGGER.error(f"{err_name} in '{def_name}'", exc_info=True)
+    logging.error(f"{err_name} in '{def_name}'", exc_info=True)
 
     error_creator = await get_error_creator(update, err_time)
 

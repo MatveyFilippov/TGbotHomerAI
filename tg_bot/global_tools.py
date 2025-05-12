@@ -5,6 +5,7 @@ from functools import lru_cache
 from aiogram.utils import exceptions as aiogram_exceptions
 from aiogram.dispatcher.filters import Filter
 from aiogram.types import InlineKeyboardMarkup, CallbackQuery, Message
+import logging
 
 
 class CallbackChecker(Filter):
@@ -42,7 +43,7 @@ async def send_message_to_developer(text: str, kb: InlineKeyboardMarkup | None =
     try:
         await base.BOT.send_message(chat_id=settings.BOT_DEVELOPER_TG_ID, parse_mode="Markdown", text=text, reply_markup=kb)
     except (aiogram_exceptions.ChatNotFound, aiogram_exceptions.BotBlocked):
-        base.LOGGER.warning("Bot hasn't (or blocked by) 'BOT_DEVELOPER_TG_ID'!")
+        logging.warning("Bot hasn't (or blocked by) 'BOT_DEVELOPER_TG_ID'!")
 
 
 async def send_message_to_user(user_tg_peer_id: int, text: str, kb: InlineKeyboardMarkup | None = None) -> Message:
