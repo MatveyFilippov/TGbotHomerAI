@@ -1,9 +1,9 @@
-import settings
-from aiogram.types import Update
-import traceback
 from . import global_tools
 import logging
+import traceback
 from datetime import datetime
+from aiogram.types import Update
+import settings
 
 
 async def error_handler(update: Update, exception: Exception):

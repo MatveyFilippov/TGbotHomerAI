@@ -1,6 +1,6 @@
-from g4f import models as __g4f_models
-import Levenshtein
 from functools import lru_cache
+import Levenshtein
+from g4f import models as __g4f_models
 
 
 __TEXT_MODELS = set()

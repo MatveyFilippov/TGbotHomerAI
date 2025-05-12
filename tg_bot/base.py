@@ -1,6 +1,5 @@
 import aiogram
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-import logging
 import settings
 
 

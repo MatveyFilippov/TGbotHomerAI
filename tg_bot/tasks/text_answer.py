@@ -1,10 +1,10 @@
-from ..base import DISPATCHER
 from .dialog_states.collection import FlagsToTextCreating
+from ..base import DISPATCHER
 from ..loading_message import LoadingMessage
-import ai
-from aiogram import exceptions
-from aiogram.types import Message, ContentType
+from aiogram import exceptions as aiogram_exceptions
 from aiogram.dispatcher import FSMContext
+from aiogram.types import Message, ContentType
+import ai
 
 
 @DISPATCHER.message_handler(content_types=ContentType.ANY, state="*")
@@ -27,7 +27,7 @@ async def handle_message(message: Message, state: FSMContext):
             await message.reply(response, parse_mode="Markdown")
             await loading.delete()
             return
-        except (exceptions.CantParseEntities, exceptions.MessageIsTooLong):
+        except (aiogram_exceptions.CantParseEntities, aiogram_exceptions.MessageIsTooLong):
             ai.delete_dialog_step(message.message_id)
 
     await loading.delete()

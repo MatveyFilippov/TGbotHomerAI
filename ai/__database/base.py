@@ -1,8 +1,8 @@
+from datetime import datetime
 import sqlalchemy
 from sqlalchemy import create_engine, Column, ForeignKey
 from sqlalchemy.orm import scoped_session, sessionmaker, declarative_base
 import settings
-from datetime import datetime
 
 
 engine = create_engine(settings.LINK_TO_DATABASE, echo=False)

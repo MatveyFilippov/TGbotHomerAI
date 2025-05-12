@@ -1,8 +1,8 @@
-from ...base import DISPATCHER
 from .collection import DialogStates
 from .dialog_allowance import DialogNotAvailable
-from aiogram.types import Message
+from ...base import DISPATCHER
 from aiogram.dispatcher import FSMContext
+from aiogram.types import Message
 
 
 @DISPATCHER.message_handler(DialogNotAvailable())

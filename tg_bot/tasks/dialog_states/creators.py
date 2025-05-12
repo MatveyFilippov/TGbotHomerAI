@@ -1,5 +1,5 @@
+from .collection import FlagsToTextCreating
 from ...base import DISPATCHER
-from .collection import *
 from aiogram.types import Message
 
 

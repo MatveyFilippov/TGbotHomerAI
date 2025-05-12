@@ -1,5 +1,4 @@
-from .__database import dialog as db_dialog
-from .__database import personal_settings as db_personal_settings
+from .__database import dialog as db_dialog, personal_settings as db_personal_settings
 from g4f.client import AsyncClient
 
 

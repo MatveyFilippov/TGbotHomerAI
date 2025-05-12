@@ -1,6 +1,6 @@
 from ..base import DISPATCHER
-import ai
 from aiogram.types import Message
+import ai
 
 
 @DISPATCHER.message_handler(commands=["reset"], state="*")

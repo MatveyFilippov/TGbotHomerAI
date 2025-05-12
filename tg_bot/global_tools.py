@@ -1,11 +1,11 @@
 from . import base
-import settings
-from typing import Callable
-from functools import lru_cache
-from aiogram.utils import exceptions as aiogram_exceptions
 from aiogram.dispatcher.filters import Filter
 from aiogram.types import InlineKeyboardMarkup, CallbackQuery, Message
+from aiogram.utils import exceptions as aiogram_exceptions
 import logging
+from functools import lru_cache
+from typing import Callable
+import settings
 
 
 class CallbackChecker(Filter):

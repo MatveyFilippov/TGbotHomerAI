@@ -1,7 +1,7 @@
 from ..base import DISPATCHER
 from ..global_tools import delete_message
-from ai import get_user
 from aiogram.types import CallbackQuery, Message
+from ai import get_user
 
 
 HELP_ANSWER_TEXT = """Welcome to the bot, {full_name}!

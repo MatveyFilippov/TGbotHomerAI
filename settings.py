@@ -1,7 +1,7 @@
-import logging
-import pytz
-from typing import Final
 import json
+import logging
+from typing import Final
+import pytz
 
 
 class SettingsJSON:

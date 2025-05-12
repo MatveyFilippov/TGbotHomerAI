@@ -1,5 +1,5 @@
-from datetime import datetime
 from .base import Session, User
+from datetime import datetime
 import settings
 
 

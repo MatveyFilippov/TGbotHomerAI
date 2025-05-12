@@ -1,10 +1,10 @@
-from datetime import timedelta, datetime
-from aiogram.types import Message
-from aiogram.dispatcher.filters import Filter
-import ai
-from functools import lru_cache
-from ...base import DISPATCHER
 from .collection import DIALOG_NOT_AVAILABLE_STATE
+from ...base import DISPATCHER
+from aiogram.dispatcher.filters import Filter
+from aiogram.types import Message
+import ai
+from datetime import timedelta, datetime
+from functools import lru_cache
 import settings
 
 

@@ -1,9 +1,9 @@
+from .dialog_states import unset_all_states
+from .dialog_states.collection import DialogStates
 from ..base import DISPATCHER
 from ..global_tools import ContainerCallback, edit_callback
-from .dialog_states.collection import DialogStates
-from .dialog_states import unset_all_states
-from ai import get_user, get_personal_settings, edit_personal_settings, models as ai_models
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, ContentType
+from ai import get_user, get_personal_settings, edit_personal_settings, models as ai_models
 
 
 class ChangePersonalSettingsCallbacks:
