@@ -1,4 +1,4 @@
-from . import Session, PersonalSettings
+from .base import Session, PersonalSettings
 from .. import models
 
 

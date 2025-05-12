@@ -1,4 +1,4 @@
-from . import Session, Dialog
+from .base import Session, Dialog
 
 
 def get_dialog(user_id: int) -> list[Dialog]:
