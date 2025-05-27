@@ -17,7 +17,7 @@ async def error_handler(update: Update, exception: Exception):
 
     await global_tools.send_message_to_developer((
         f"{err_time} ({settings.BOT_TIMEZONE.zone})"
-        "\nUnexpected error occurred <b>{err_name}</b> in <b>{def_name}</b>"
+        "\nUnexpected error occurred **{err_name}** in **{def_name}**"
     ))
     await global_tools.send_message_to_developer(error_creator + f"\n\n```log\n{error_text}\n```")
 
@@ -25,9 +25,12 @@ async def error_handler(update: Update, exception: Exception):
 async def get_error_creator(update: Update, err_time: str) -> str:
     try:
         await global_tools.send_message_to_user(user_tg_peer_id=update.message.chat.id, text=(
-            f"{err_time} ({settings.BOT_TIMEZONE.zone}) --- <b>ERROR</b>"
+            f"{err_time} ({settings.BOT_TIMEZONE.zone}) --- **ERROR**"
             "\nOops, something went wrong 🛠️\nReported the bug — please try again soon"
         ))
-        return "Error from @" + update.message.from_user.username
+        if update.message.from_user.username:
+            return f"Error from @{update.message.from_user.username}"
+        else:
+            return f"Error from {update.message.from_user.full_name}"
     except AttributeError:
         return "Error in source code"
